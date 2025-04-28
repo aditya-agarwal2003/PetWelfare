@@ -1,0 +1,173 @@
+{% extends '_layout.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    #product-list {
+        overflow-y: auto;
+        max-height: 500px;
+        scrollbar-width: thin;
+        scrollbar-color: darkgray lightgray;
+    }
+
+    #product-list::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    #product-list::-webkit-scrollbar-thumb {
+        background-color: darkgray;
+    }
+
+    #product-list::-webkit-scrollbar-thumb:hover {
+        background-color: gray;
+    }
+
+    #product-list::-webkit-scrollbar-track {
+        background-color: lightgray;
+    }
+</style>
+    <!-- Hero Slider Begin -->
+    <section class="hero-slider">
+        <div class="hero-items owl-carousel">
+            <div class="single-slider-item set-bg" data-setbg="{% static './img/slider-2.jpg' %}">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h1>Safeguarding Paws:</h1>
+                            <h2>Shelter, Heal, Connect.</h2>
+                            <!-- <a href="#" class="primary-btn">See More</a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="single-slider-item set-bg" data-setbg="{% static './img/slider-1.jpg' %}">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h1>Furry Friends Await:</h1>
+                            <h2>Adopt, Love, Care.</h2>
+                            <!-- <a href="#" class="primary-btn">See More</a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="single-slider-item set-bg" data-setbg="{% static './img/slider-3.jpg' %}">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <h1>Nurturing Tails, Saving Lives:</h1>
+                            <h2>Your Pet Haven.</h2>
+                            <!-- <a href="#" class="primary-btn">See More</a> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="latest-products spad">
+        <div class="container">
+            <div class="product-filter">
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <div class="section-title">
+                            <h2>Latest Posts</h2>
+                        </div>
+                        <ul class="product-controls">
+                            <li data-filter="*">All</li>
+                            <li data-filter=".dog">Dogs</li>
+                            <li data-filter=".cat">Cats</li>
+                            <li data-filter=".bird">Birds</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="row" id="product-list" style="overflow-y: auto; max-height: 1200px;">
+                {% for post in posts %}
+                    <div class="col-lg-3 col-sm-6 mix all {{ post.category }}">
+                        <div class="single-product-item p-1 shadow" style="background-color: whitesmoke; border: 2px solid rgb(0, 0, 0);">
+                            <figure class="image-container" style="height: 200px; overflow: hidden;">
+                                <a href="{% url 'see_details' post_id=post.id %}"><img src="{{ post.image.url }}" alt="" style="width: 100%; height: 100%; object-fit: cover;"></a>
+                                <div class="p-status">{{ post.category }}</div>
+                            </figure>
+                            <div class="product-text px-1">
+                                <h3 class="pb-2">{{ post.name }}</h3>
+                                <hr>
+                                {% if post.price %}
+                                    <h5>&#x20B9;{{ post.price }}</h5>
+                                {% endif %}
+                                <h6 style="display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">{{ post.description }}</h6>
+                            </div>
+                            <div class="text-center py-2">
+                                <a href="{% url 'see_details' post_id=post.id %}" class="btn btn-sm btn-primary shadow">Details</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <!-- Latest Product End -->
+<hr>
+<br>
+    <!-- Lookbok Section Begin -->
+    <section class="lookbok-section">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-4 offset-lg-1">
+                    <div class="lookbok-left">
+                        <div class="section-title">
+                            <h2>Adoption <br />Stories</h2>
+                        </div>
+                        <p>Welcome to our heartwarming world of adoption stories, where the power of compassion transforms 
+                            the lives of our beloved furry friends. Each adoption tale weaved within these pages is a testament 
+                            to the profound connection between animals and their human companions. Picture the joyous journey 
+                            of abandoned or neglected pets finding solace in the warmth of a loving home, as the once-forgotten 
+                            souls become cherished family members. Our adoption stories are a symphony of resilience, hope, and 
+                            unwavering love—where every wagging tail, gentle purr, or playful bounce tells a story of redemption 
+                            and newfound happiness. From timid kittens to senior dogs, each narrative unfolds with the promise of 
+                            second chances and the transformative magic that occurs when kind hearts open their doors to those in 
+                            need. Dive into the tales of compassion, where families find completeness, and four-legged companions 
+                            discover the security and warmth of a forever home. Be a part of these narratives, witness the power of 
+                            adoption, and embark on a journey where the unspoken language of gratitude is exchanged through wet 
+                            noses, furry cuddles, and the lifelong bond forged between pet and parent. Together, let us celebrate 
+                            the incredible stories that paint our world with the hues of compassion and create a legacy of love that 
+                            lasts a lifetime. Join us in the joy of making a difference—one adoption story at a time.</p>
+                        <a href="{% url 'about' %}" class="primary-btn look-btn">About Us</a>
+                    </div>
+                </div>
+                <div class="col-lg-5 offset-lg-1">
+                    <div class="lookbok-pic pt-8">
+                        <img src="{% static './img/adStory.jpg' %}" alt="">
+                        <div class="pic-text">Pet Haven</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Lookbok Section End -->
+
+    <!-- Logo Section Begin -->
+    <div class="logo-section spad">
+        <div class="logo-items owl-carousel">
+            <div class="logo-item">
+                <img src="img/logos/logo-1.png" alt="">
+            </div>
+            <div class="logo-item">
+                <img src="img/logos/logo-2.png" alt="">
+            </div>
+            <div class="logo-item">
+                <img src="img/logos/logo-3.png" alt="">
+            </div>
+            <div class="logo-item">
+                <img src="img/logos/logo-4.png" alt="">
+            </div>
+            <div class="logo-item">
+                <img src="img/logos/logo-5.png" alt="">
+            </div>
+        </div>
+    </div>
+    <!-- Logo Section End -->
+
+    <!-- Footer Section End -->
+{% endblock %}

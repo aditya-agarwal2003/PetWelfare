@@ -1,0 +1,164 @@
+{% extends '_layout.html' %}
+{% load static %}
+
+
+{% block content %}
+<style>
+    .shadow-hr {
+        border: 0; /* Remove default border */
+        height: 1px; /* Set the height of the hr */
+        background-color: #ddd; /* Set the color of the hr */
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.6); /* Add a shadow at the bottom */
+    }
+</style>
+    <!-- Page Add Section Begin -->
+    <div class="container mt-2">
+        {% include 'includes/alerts.html' %}
+    </div>
+    <section class="page-add pb-0 mb-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="page-breadcrumb">
+                        <h4 style="font-weight: 600;">{{ header_tag }}<span>.</span></h4>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <img src="{% static './img/add.jpg' %}" alt="">
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Page Add Section End -->
+    <hr class="shadow-hr">
+    <!-- Product Page Section Beign -->
+    <section class="product-page">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="product-slider owl-carousel">
+                        <div class="product-img">
+                            <figure>
+                                <img src="{{ post.image.url }}">
+                                <div class="p-status">{{ post.category }}</div>
+                            </figure>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="col-lg-6">
+                    <div class="product-content">
+                        <h2 class="capitalize-text">{{ post.name }}</h2>
+                        <h6 class="capitalize-text">Category: {{ post.category }}</h6>
+                        <div class="pc-meta pt-2">
+                            {% if post.price %}
+                                <h5>&#x20B9;{{ post.price }}</h5>
+                            {% endif %}
+                        </div>
+                        <p>{{ post.description }}</p>
+                        <ul class="tags">
+                            <li class="capitalize-text"><span>Address :</span> {{ post.post_address }}</li>
+                            <li class="capitalize-text"><span>Gender :</span> {{ post.gender }}</li>
+                        </ul>
+                        {% if request.user == post.user %}
+                            <h4 class="pt-3">~ Created By You</h4>
+                        {% else %}
+                            <h4 class="pt-3">Owner Details</h4>
+                            <span>~ {{ post.user.first_name }} ({{ post.user.phone_number }})</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div>
+                    <br>
+                    {% if request.user != post.user %}
+                        {% if is_requested %}
+                            <a href="{% url 'delete_adopt_request' ad_id=is_requested.id %}" class="primary-btn pc-btn btn-warning text-white">Revoke Adoption Request</a>
+                        {% else %}
+                            <a href="{% url 'make_adopt_request' post_id=post.id %}" class="primary-btn pc-btn btn-dark text-white">Request for Adoption</a>
+                        {% endif %}
+                    {% else %}
+                        <button class="primary-btn pc-btn btn-dark text-white" id="ad-req-btn" onclick="viewRequests()">See Adoption Requests</button>
+                        <a href="{% url 'delete_post' post_id=post.id %}" class="primary-btn pc-btn btn-danger text-white">Delete</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Product Page Section End -->
+    <div class="container mt-3" id="ad-req-table" style="display: none;">
+        {% if requests %}
+        <h3 class="py-3" style="text-align: center;">Adoption Requests</h3>
+        <div style="overflow-y: auto; max-height: 250px;">
+            <table class="table border shadow table-striped">
+            <thead>
+                <tr class="bg-dark text-white">
+                    <th scope="col">Name</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Requested At</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for request in requests %}
+                <tr>
+                    <th>~ {{ request.user.full_name }}</th>
+                    <td>{{ request.user.phone_number }}</td>
+                    <td>{{ request.created_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            </table>
+        </div>
+        {% else %}
+            <h3 style="text-align: center;">No Pending Requests</h3>
+        {% endif %}
+    </div>
+    <hr class="shadow-hr">
+    <!-- Related Product Section Begin -->
+    {% if related %}
+        <section class="related-product spad">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-12 text-center">
+                        <div class="section-title">
+                            <h2>Related Posts</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    {% for rel in related %}
+                        <div class="col-lg-3 col-sm-6 mix">
+                            <div class="single-product-item p-1 shadow" style="background-color: whitesmoke; border: 2px solid black;">
+                                <figure class="image-container" style="height: 200px; overflow: hidden;">
+                                    <a href="{% url 'see_details' post_id=rel.id %}"><img src="{{ rel.image.url }}" alt="" style="width: 100%; height: 100%; object-fit: cover;"></a>
+                                    <div class="p-status">{{ rel.category }}</div>
+                                </figure>
+                                <div class="product-text px-1">
+                                    <h3 class="pb-2">{{ rel.name }}</h3>
+                                    <hr>
+                                    {% if rel.price %}
+                                        <h5>&#x20B9;{{ rel.price }}</h5>
+                                    {% endif %}
+                                    <h6 style="display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">{{ rel.description }}</h6>
+                                </div>
+                                <div class="text-center py-2">
+                                    <a href="{% url 'see_details' post_id=rel.id %}" class="btn btn-sm btn-primary shadow">Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </section>
+    {% else %}
+        <br>
+    {% endif %}
+
+<script>
+    function viewRequests(){
+        table = document.getElementById('ad-req-table');
+        table.style.display = table.style.display === 'block' ? 'none' : 'block';
+        viewPostBtn = document.getElementById('ad-req-btn');
+        viewPostBtn.textContent = viewPostBtn.textContent === 'Hide Adoption Requests' ? 'See Adoption Requests' : 'Hide Adoption Requests'
+    }
+</script>
+{% endblock %}

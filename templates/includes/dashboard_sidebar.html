@@ -1,0 +1,18 @@
+<style>
+  #view-request-btn:hover, #view-post-btn:hover{
+      cursor: pointer;
+  }
+</style>
+
+<aside class="col-md-3">
+    <!--   SIDEBAR   -->
+    <ul class="list-group">
+      <a class="list-group-item {% if '/accounts/' == request.path %}active {% else %}text-danger  {% endif %}" href=""> Dashboard </a>
+      <a class="list-group-item text-danger" active id="view-post-btn" onclick="showPosts()"> Show Posts </a>
+      <a class="list-group-item text-danger" active id="view-request-btn" onclick="showRequests()"> Show Requests</a>
+      <!-- <a class="list-group-item {% if '/edit_profile/' in request.path %}active {% else %}text-danger {% endif %}" href=""> Edit Profile </a> -->
+    </ul>
+    <br>
+    <a class="btn btn-light btn-block" href="{% url 'logout' %}"> <i class="fa fa-power-off"></i> <span class="text">Log out</span> </a>
+    <!--   SIDEBAR .//END   -->
+  </aside>

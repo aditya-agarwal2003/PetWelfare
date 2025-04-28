@@ -1,0 +1,92 @@
+
+{% load static %}
+
+<style>
+	.header-section {
+	  position: fixed;
+	  top: 0;
+	  width: 100%;
+	  z-index: 1000;
+	  background-color: #fff; /* You can customize the background color */
+	  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add a subtle box shadow */
+	  padding: 20px;
+	}
+  
+	.header-info {
+	  /* Add some padding to compensate for the fixed header */
+	  padding-top: 110px; /* Adjust this value based on your header height */
+	}
+
+	@media (max-width: 1073px){
+		.header-info {
+			display: none;
+		}
+	}
+</style>
+<!-- Header Section Begin -->
+<header class="header-section">
+	<div class="container-fluid">
+	  <div class="inner-header d-flex justify-content-between align-items-center">
+		<div class="logo">
+		  <a href="{% url 'landing_page' %}">
+			<img style="height: 55px" src="{% static './img/logorm.png' %}" alt="Logo">
+		  </a>
+		</div>
+		<nav class="main-menu mobile-menu">
+		  <ul class="">
+			<li><a href="{% url 'landing_page' %}">Adopt</a></li>
+			<li><a href="{% url 'create_post' %}">Create Post</a></li>
+			<li class="has-submenu">
+			  <a href="#">Check Disease</a>
+			  <ul class="sub-menu">
+				<li><a href="https://dogdiseaseprediction.onrender.com/"
+					target="_blank">Check Dog's Disease</a></li>
+				<li><a style="cursor: pointer;" onclick="location.replace(`http://localhost:8501/`)"
+					target="_blank">Skin Disease</a></li>
+			  </ul>
+			</li>
+			<li><a href="{% url 'about' %}">About</a></li>
+			<li><a href="{% url 'contact' %}">Contact Us</a></li>
+		  </ul>
+		</nav>
+		<div class="">
+		  {% if user.id is None %}
+			<small class="title text-muted">Welcome guest!</small>
+			<br>
+			<a class="text-dark" href="{% url 'login' %}"><b>Sign in</b></a> <span class="dark-transp"> | </span>
+			<a class="text-dark" href="{% url 'register' %}"><b>Register</b></a>
+		  {% else %}
+			<small class="title text-muted">Welcome {{ user.first_name }}!</small>
+			<br>
+			<a class="text-dark" href="{% url 'dashboard' %}"><b>Dashboard</b></a> <span class="dark-transp"> | </span>
+			<a class="text-dark" href="{% url 'logout' %}"><b>Logout</b></a>
+		  {% endif %}
+		</div>
+	  </div>
+	</div>
+  </header>
+  
+<div class="header-info">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-4">
+				<div class="header-item">
+					<!-- <img src="img/icons/delivery.png" alt=""> -->
+					<p>Adopt, Shelter, Heal: Compassionate Connections</p>
+				</div>
+			</div>
+			<div class="col-md-4 text-left text-lg-center">
+				<div class="header-item">
+					<!-- <img src="img/icons/voucher.png" alt=""> -->
+					<p>Caring Hearts, Happy Tails: Join Us</p>
+				</div>
+			</div>
+			<div class="col-md-4 text-left text-xl-right">
+				<div class="header-item">
+				<!-- <img src="img/icons/sales.png" alt=""> -->
+				<p>Empathy Unleashed: Rescuing Hope</p>
+			</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,101 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Welcome to PAW!</title>
+  <link href="path/to/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: 'Arial', sans-serif;
+      background: #070707;
+    }
+
+    .container-fluid {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .background-images {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.7;
+      z-index: -1;
+      display: none;
+    }
+
+    .background-images.active {
+      display: block;
+    }
+
+    .welcome-text {
+      text-align: center;
+      font-size: 24px;
+      color: #fdfdfd;
+    }
+
+    .btn-custom {
+      margin-top: 20px;
+      background-color: #28a745;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 18px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      text-decoration: none;
+    }
+
+    .btn-custom:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+
+    <div class="container-fluid">
+        <!-- Background Images -->
+        <img class="background-images" active src="{% static './img/desk1.jpg' %}" alt="">
+        <img class="background-images" src="{% static './img/desk2.jpg' %}" alt="">
+        <img class="background-images" src="{% static './img/desk3.jpg' %}" alt="">
+        <img class="background-images" src="{% static './img/desk4.jpg' %}" alt="">
+        <img class="background-images" src="{% static './img/desk5.jpg' %}" alt="">
+    
+        <!-- Welcome Text -->
+        <div class="welcome-text">
+          <p>Welcome to Pet Animal Welfare!</p>
+          <small>Furry Friends Await</small>
+        </div>
+        <a href="{% url 'landing_page' %}" class="btn btn-custom">Explore Now</a> 
+      </div>
+    
+      <script src="path/to/bootstrap/js/bootstrap.bundle.min.js"></script>
+      <script>
+        document.addEventListener('DOMContentLoaded', function() {
+          var images = document.querySelectorAll('.background-images');
+          var currentImageIndex = 0;
+    
+          function changeImage() {
+            images[currentImageIndex].classList.remove('active');
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+            images[currentImageIndex].classList.add('active');
+          }
+    
+          setInterval(changeImage, 4000);
+        });
+      </script>
+</body>
+</html>
+

@@ -1,0 +1,107 @@
+{% extends '_layout.html' %}
+{% load static %}
+
+
+{% block content %}
+
+<style>
+    @media (max-width: 1074px){
+        .contact-sec {
+            margin-top: 150px;
+        }
+    }
+</style>
+
+    <div class="contact-sec">
+        <!-- Page Add Section Begin -->
+    <section class="page-add">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="page-breadcrumb">
+                        <h2>Let Us Connect<span>.</span></h2>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <img src="{% static './img/contactus.jpg' %}" alt="">
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Page Add Section End -->
+    <div class="container mt-2">
+        {% include 'includes/alerts.html' %}
+    </div>
+    <!-- Contact Section Begin -->
+    <div class="contact-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <form action="{% url 'contact' %}" method="POST" enctype="multipart/form-data" class="contact-form">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label>Name: </label>
+                                {{ contact_form.name }}
+                            </div>
+                            <div class="col-lg-6">
+                                <label>Phone Number: </label>
+                                {{ contact_form.phone_number }}
+                            </div>
+                            <div class="col-lg-12">
+                                <label>Email: </label>
+                                {{ contact_form.email}}
+                            </div>
+                            <div class="col-lg-12">
+                                <label>Subject: </label>
+                                {{ contact_form.subject }}
+                                <label class="mt-4">Message: </label>
+                                {{ contact_form.message }}
+                            </div>
+                            <div class="col-lg-12 text-right">
+                                <button class="btn btn-dark" type="submit" value="Send Message">Send Message</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-3 offset-lg-1">
+                    <div class="contact-widget">
+                        <div class="cw-item">
+                            <h5>Location</h5>
+                            <ul>
+                                <li>Graphic Era Hill University, </li>
+                                <li>Bhimtal, Uttarakhand, India</li>
+                            </ul>
+                        </div>
+                        <div class="cw-item">
+                            <h5>Phone</h5>
+                            <ul>
+                                <li>+91 88774-56995</li>
+                                <li>+91 79985-34535</li>
+                            </ul>
+                        </div>
+                        <div class="cw-item">
+                            <h5>E-mail</h5>
+                            <ul>
+                                <li>contact@paw.com</li>
+                                <li>www.paw.com</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="map">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d13907.297558169219!2d79.5308891!3d29.3754307!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39a0987622d2a7f3%3A0x8a1cf97c55e9e156!2sGraphic%20Era%20Hill%20University%20-%20Bhimtal%20Campus!5e0!3m2!1sen!2sin!4v1709754852610!5m2!1sen!2sin"
+                            height="560" style="border:0;" allowfullscreen=""></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Contact Section End -->
+    </div>
+
+{% endblock %}

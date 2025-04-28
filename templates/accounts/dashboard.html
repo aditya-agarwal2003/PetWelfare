@@ -1,0 +1,134 @@
+{% extends '_layout.html' %}
+
+
+{% block content %}
+<style>
+  @media (max-width: 1074px){
+		.section-content {
+			padding-top: 100px;
+		}
+	}
+</style>
+<br>
+<section class="section-content padding-y bg" style="margin-top: 50px;">
+
+
+<div class="container">
+	{% include 'includes/alerts.html' %}
+	<div class="row">
+	{% include 'includes/dashboard_sidebar.html' %}
+	<main class="col-md-9">
+		<article class="card shadow">
+
+		<header class="card-header">
+			<strong class="d-inline-block mr-3">Logged In as: </strong>
+			<span>{{user.full_name}}</span>
+		</header>
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-6">
+          <div class="card" style="text-align:center;">
+            <div class="card-body">
+              <h5 class="card-title">Total posts</h5>
+              <h4>{{posts_count}}</h4>
+              <!-- <button class="btn btn-sm btn-outline-danger mt-2" id="view-post-btn" onclick="showPosts()">Show posts</button> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="card" style="text-align:center;">
+            <div class="card-body">
+              <p class="mb-0">{{user.email}}</p>
+              <p>{{user.phone_number}}</p>
+            </div>
+          </div>
+        </div>
+			</div> <!-- row.// -->
+		</div> <!-- card-body .// -->
+		</article> <!-- order-group.// -->
+      <div class="container mt-4" id="post-table" style="display: none;">
+        {% if posts %}
+        <h5 class="py-2">Your Posts</h5>
+        <div style="overflow-y: auto; max-height: 250px;">
+          <table class="table border shadow table-striped">
+              <thead>
+                  <tr class="bg-dark text-white">
+                      <th scope="col">Name</th>
+                      <th scope="col">Created At</th>
+                      <th scope="col">Details</th>
+                  </tr>
+              </thead>
+              <tbody>
+                {% for post in posts %}
+                  <tr>
+                      <th>{{ post.name }}</th>
+                      <td>{{ post.created_at }}</td>
+                      <td>
+                        <a class="btn btn-sm btn-outline-danger" href="{% url 'see_details' post_id=post.id %}">See Details</a>
+                      </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+          </table>
+        </div>
+        {% else %}
+          <h5 class="py-2">No Posts</h5>
+        {% endif %}
+    </div>
+
+    <div class="container mt-4" id="request-table" style="display: none;">
+      {% if requests %}
+      <h5 class="py-2">Your Requests</h5>
+      <div style="overflow-y: auto; max-height: 250px;">
+        <table class="table border shadow table-striped">
+          <thead>
+            <tr class="bg-dark text-white">
+              <th scope="col">Name</th>
+              <th scope="col">Post By</th>
+              <th scope="col">Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for request in requests %}
+              <tr>
+                  <th>{{ request.post.name }}</th>
+                  <td>~ {{ request.post.user.full_name }}</td>
+                  <td>
+                    <a class="btn btn-sm btn-outline-danger" 
+                    href="{% url 'see_details' post_id=request.post.id %}">See Details</a>
+                  </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+        <h5 class="py-2">No Requests</h5>
+      {% endif %}
+    </div>
+	</main>
+</div> <!-- row.// -->
+</div>
+
+
+</section>
+<br>
+
+<script>
+  function showPosts(){
+    table = document.getElementById('post-table');
+    table.style.display = table.style.display === 'block' ? 'none' : 'block';
+    viewPostBtn = document.getElementById('view-post-btn');
+    viewPostBtn.textContent = viewPostBtn.textContent === 'Hide Posts' ? 'Show Posts' : 'Hide Posts'
+  }
+
+  function showRequests(){
+    table = document.getElementById('request-table');
+    table.style.display = table.style.display === 'block' ? 'none' : 'block';
+    viewPostBtn = document.getElementById('view-request-btn');
+    viewPostBtn.textContent = viewPostBtn.textContent === 'Hide Requests' ? 'Show Requests' : 'Hide Requests'
+  }
+</script>
+
+{% endblock %}

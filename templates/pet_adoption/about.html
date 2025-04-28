@@ -1,0 +1,97 @@
+{% extends '_layout.html' %}
+{% load static %}
+
+
+{% block content %}
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .jumbotron {
+            background-color: whitesmoke;
+            color: #ffffff;
+            padding: 2rem;
+            margin-bottom: 0;
+        }
+
+        .img-block {
+            overflow: hidden;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        @media (max-width: 1074px){
+            .about-sec {
+                margin-top: 180px;
+            }
+        }
+    </style>
+
+    <div class="about-sec">
+        <!-- Jumbotron Header -->
+    <header class="container jumbotron text-center bg-dark text-white mt-3">
+        <h1 class="display-4">About Pet Animal Welfare.</h1>
+        <p class="lead">Dedicated to the well-being of our furry friends.</p>
+    </header>
+
+    <!-- Content Section -->
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="img-block">
+                    <img src="{% static './img/about1.jpg' %}" alt="Shelter Image" class="img-fluid">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h2>Our Mission</h2>
+                <p>At Pet Animal Welfare, our mission is to provide love, care, and shelter to animals in need. We believe
+                    that every animal deserves a safe and loving home, and we are committed to making a positive
+                    impact on their lives.</p>
+                <p>We strive to create a community where animals are treated with kindness and respect. Through our
+                    adoption programs, we aim to connect animals with loving families, giving them a second chance at
+                    happiness.</p>
+                <p>Additionally, we focus on raising awareness about the importance of responsible pet ownership and
+                    providing necessary medical care to ensure the well-being of all animals under our care.</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Adopt a Pet</h2>
+                <p>Are you ready to welcome a new member into your family? Consider adopting a pet from Pet Animal Welfare.
+                    Our adoption process is designed to match animals with loving and responsible owners. Whether
+                    you're looking for a playful kitten, a loyal dog, or a small critter, we have a variety of
+                    animals waiting for their forever homes.</p>
+                <p>When you adopt from us, you not only gain a furry companion but also contribute to the larger cause
+                    of animal welfare. Each adoption helps us make room for more animals in need and ensures that
+                    every pet gets the love and care they deserve.</p>
+            </div>
+            <div class="col-md-6">
+                <div class="img-block">
+                    <img src="{% static './img/about2.jpg' %}" alt="Adopt a Pet Image" class="img-fluid">
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="img-block">
+                    <img src="{% static './img/about3.jpg' %}" alt="Medical Checkup Image" class="img-fluid">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h2>Medical Checkup</h2>
+                <p>Ensuring the health and well-being of our animals is a top priority at Pet Animal Welfare. Before any
+                    adoption, each animal undergoes a thorough medical checkup by our experienced veterinary team.
+                    This includes vaccinations, spaying or neutering, and any necessary treatments for existing
+                    conditions.</p>
+                <p>We believe that preventative care is key to a long and happy life for pets. Our commitment to
+                    providing comprehensive medical care sets us apart, and we continue to support adopted families
+                    with resources and guidance for the ongoing health of their new pets.</p>
+            </div>
+        </div>
+    </div>
+    </div>
+
+{% endblock %}

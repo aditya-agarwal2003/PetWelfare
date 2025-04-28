@@ -1,0 +1,112 @@
+<!-- ========================= FOOTER ========================= -->
+{% load static %}
+
+
+<!-- Footer Section Begin -->
+<footer class="footer-section spad">
+	<div class="container">
+		<div class="newslatter-form">
+			<div class="row">
+				<div class="col-lg-12">
+					<form action="#">
+						<input type="text" placeholder="Your email address">
+						<button type="submit">Subscribe to our newsletter</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		<div class="footer-widget text-center">
+			<div class="row">
+				<div class="col-lg-3 col-sm-6">
+					<div class="single-footer-widget">
+						<h4>About us</h4>
+						<ul>
+							<li>Compassion</li>
+							<li>Empathy</li>
+							<li>Dedication</li>
+							<li>Resillience</li>
+							<li>Community</li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-3 col-sm-6">
+					<div class="single-footer-widget">
+						<h4>Customer Care</h4>
+						<ul>
+							<li>Support</li>
+							<li>Attentiveness</li>
+							<li>Responsiveness</li>
+							<li>Privary Policy</li>
+							<li>Assistance</li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-3 col-sm-6">
+					<div class="single-footer-widget">
+						<h4>Our Services</h4>
+						<ul>
+							<li>Adoption</li>
+							<li>Shelter</li>
+							<li>Healing</li>
+							<li>Well-Being</li>
+							<li>Connection</li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-3 col-sm-6">
+					<div class="single-footer-widget">
+						<h4>Information</h4>
+						<ul>
+							<li>Transparency</li>
+							<li>Knowledge</li>
+							<li>Insight</li>
+							<li>Guidance</li>
+							<li>Education</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="social-links-warp">
+		<div class="container">
+			<div class="social-links text-center">
+				<a href="" class="instagram"><i class="fa fa-instagram"></i><span>instagram</span></a>
+				<a href="" class="pinterest"><i class="fa fa-pinterest"></i><span>pinterest</span></a>
+				<a href="" class="facebook"><i class="fa fa-facebook"></i><span>facebook</span></a>
+				<a href="" class="twitter"><i class="fa fa-twitter"></i><span>twitter</span></a>
+				<a href="" class="youtube"><i class="fa fa-youtube"></i><span>youtube</span></a>
+			</div>
+		</div>
+
+	<div class="container text-center pt-5">
+		<p>Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved</p>
+	</div>
+
+	</div>
+</footer>
+
+<!-- ========================= FOOTER END // ========================= -->
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+<script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/jquery.magnific-popup.min.js' %}"></script>
+<script src="{% static 'js/jquery.slicknav.js' %}"></script>
+<script src="{% static 'js/owl.carousel.min.js' %}"></script>
+<script src="{% static 'js/jquery.nice-select.min.js' %}"></script>
+<script src="{% static 'js/mixitup.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+
+<script>
+	$(document).ready(function(){
+		$('.thumb a').click(function(e){
+			e.preventDefault();
+			$('.mainImage img').attr('src',$(this).attr("href"));
+		})
+	})
+</script>
+
+</body>
+</html>

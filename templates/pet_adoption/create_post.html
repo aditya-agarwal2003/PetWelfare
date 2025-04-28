@@ -1,0 +1,93 @@
+{% extends '_layout.html' %}
+{% load static %}
+
+
+{% block content %}
+
+    <!-- Page Add Section Begin -->
+    <section class="page-add">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <div class="page-breadcrumb">
+                        <h2>Create an Adoption Post<span>.</span></h2>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <img src="{% static './img/add1.jpg' %}" alt="">
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Page Add Section End -->
+
+    <!-- Contact Section Begin -->
+    <div class="contact-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <form action="{% url 'create_post' %}" method="POST" enctype="multipart/form-data" class="contact-form">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <label>Name: </label>
+                                {{ pet_form.name }}
+                            </div>
+                            <div class="col-lg-6">
+                                <label>Price(Rs.) (if any): </label>
+                                {{ pet_form.price }}
+                            </div>
+                            <div class="col-lg-6">
+                                <label>Category: </label>
+                                {{ pet_form.category}}
+                            </div>
+                            <div class="col-lg-6">
+                                <label>Gender: </label>
+                                {{ pet_form.gender }}
+                            </div>
+                            <div class="col-lg-12">
+                                <label class="mt-4">Image: </label>
+                                {{ pet_form.image }}
+
+                                <label class="mt-2">Address: </label>
+                                {{ pet_form.post_address }}
+                                
+                                <label class="mt-2">Description: </label>
+                                {{ pet_form.description }}
+                            </div>
+                            <div class="col-lg-12 text-right">
+                                <button class="btn btn-dark" type="submit" value="Create Post">Create Post</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-3 offset-lg-1">
+                    <div class="contact-widget">
+                        <div class="cw-item">
+                            <h5>Embrace a Lifelong Companion:</h5>
+                            <ul>
+                                <li>Adopt a loving pet in need</li>
+                                <li>Provide a secure and caring home</li>
+                            </ul>
+                        </div>
+                        <div class="cw-item">
+                            <h5>Create a Haven for Strays:</h5>
+                            <ul>
+                                <li>Extend a sheltering hand to strays</li>
+                                <li>Offer refuge from the streets</li>
+                            </ul>
+                        </div>
+                        <div class="cw-item">
+                            <h5>Ensure Health, Ensure Happiness:</h5>
+                            <ul>
+                                <li>Prioritize regular veterinary check-ups</li>
+                                <li>Stay informed about pet well-being</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
