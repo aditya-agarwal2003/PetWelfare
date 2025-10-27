@@ -53,3 +53,16 @@ class Contact(models.Model):
     phone_number = models.CharField(max_length=50)
     subject = models.CharField(max_length=50)
     message = models.TextField(max_length=500,blank=True)
+
+
+class Doctor(models.Model):
+    account = models.OneToOneField(Account, on_delete=models.CASCADE)
+    specialization = models.CharField(max_length=100)
+    qualification = models.CharField(max_length=100, blank=True)
+    experience = models.PositiveIntegerField(default=0, help_text="Years of experience")
+    clinic_name = models.CharField(max_length=100, blank=True)
+    pincode = models.CharField(max_length=10)
+    consultation_fee = models.DecimalField(max_digits=6, decimal_places=2, default=0.00)
+
+    def __str__(self):
+        return f"Dr. {self.account.first_name} {self.account.last_name}"
