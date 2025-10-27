@@ -24,6 +24,9 @@
 			<strong class="d-inline-block mr-3">Logged In as: </strong>
 			<span>{{user.full_name}}</span>
 		</header>
+    {% if is_doctor %}
+    <p>Hello</p>
+    {% else %}
 		<div class="card-body">
 			<div class="row">
 				<div class="col-md-6">
@@ -31,7 +34,7 @@
             <div class="card-body">
               <h5 class="card-title">Total posts</h5>
               <h4>{{posts_count}}</h4>
-              <!-- <button class="btn btn-sm btn-outline-danger mt-2" id="view-post-btn" onclick="showPosts()">Show posts</button> -->
+              <button class="btn btn-sm btn-outline-danger mt-2" id="view-post-btn" onclick="showPosts()">Show posts</button>
             </div>
           </div>
         </div>
@@ -107,6 +110,7 @@
         <h5 class="py-2">No Requests</h5>
       {% endif %}
     </div>
+    {% endif %}
 	</main>
 </div> <!-- row.// -->
 </div>

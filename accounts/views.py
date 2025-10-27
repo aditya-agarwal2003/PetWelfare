@@ -64,16 +64,41 @@ def logout(request):
     return redirect('login')
 
 
-@login_required(login_url = 'login')
+# @login_required(login_url = 'login')
+# def dashboard(request):
+#     data = {}
+#     user = request.user
+#     posts = Post.objects.filter(
+#         user=user, is_active=True
+#     ).order_by('-created_at')
+#     data['posts'] = posts
+#     data['requests'] = AdoptionRequest.objects.filter(
+#         user=user, is_active=True
+#     )
+#     data['posts_count'] = posts.count()
+#     return render(request, 'accounts/dashboard.html', data)
+
+
+@login_required(login_url='login')
 def dashboard(request):
-    data = {}
     user = request.user
-    posts = Post.objects.filter(
-        user=user, is_active=True
-    ).order_by('-created_at')
-    data['posts'] = posts
-    data['requests'] = AdoptionRequest.objects.filter(
-        user=user, is_active=True
-    )
-    data['posts_count'] = posts.count()
-    return render(request, 'accounts/dashboard.html', data)
+
+    # Check if user is a doctor
+    if hasattr(user, 'doctor'):
+        doctor = user.doctor
+        appointments = doctor.appointment_set.all().order_by('-appointment_date') if hasattr(doctor, 'appointment_set') else []
+        return render(request, 'accounts/dashboard.html', {
+            'is_doctor': True,
+            'doctor': doctor,
+            'appointments': appointments,
+        })
+
+    # Normal user dashboard
+    posts = Post.objects.filter(user=user, is_active=True).order_by('-created_at')
+    requests = AdoptionRequest.objects.filter(user=user, is_active=True)
+    return render(request, 'accounts/dashboard.html', {
+        'is_doctor': False,
+        'posts': posts,
+        'requests': requests,
+        'posts_count': posts.count(),
+    })
