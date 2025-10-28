@@ -1,0 +1,68 @@
+{% extends '_layout.html' %}
+
+{% block content %}
+<section class="section-content padding-y bg" style="margin-top: 50px;">
+<div class="container">
+  {% include 'includes/alerts.html' %}
+  <h3 class="mb-4">Doctor Dashboard</h3>
+
+  <!-- Doctor Info -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h5 class="card-title mb-3">Doctor Details</h5>
+      <p><strong>Name:</strong> {{ doctor.account.full_name }}</p>
+      <p><strong>Specialization:</strong> {{ doctor.specialization }}</p>
+      <p><strong>Experience:</strong> {{ doctor.experience }} years</p>
+      <p><strong>Email:</strong> {{ doctor.account.email }}</p>
+      <p><strong>Phone:</strong> {{ doctor.account.phone_number }}</p>
+    </div>
+  </div>
+
+  <!-- Appointment Requests -->
+  <h5 class="mb-3">Appointment Requests Received ({{ appointments_count }})</h5>
+
+  {% if appointments %}
+  <div class="row">
+    {% for appointment in appointments %}
+    <div class="col-md-6 mb-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h6 class="card-title text-danger mb-2">
+            Appointment #{{ appointment.id }}
+          </h6>
+          <p class="mb-1"><strong>Pet Name:</strong> {{ appointment.pet_name }}</p>
+          <p class="mb-1"><strong>Owner:</strong> {{ appointment.user.full_name }}</p>
+          <p class="mb-1"><strong>Email:</strong> {{ appointment.user.email }}</p>
+          <p class="mb-1"><strong>Phone:</strong> {{ appointment.user.phone_number }}</p>
+          <p class="mb-1"><strong>Date:</strong> {{ appointment.date|date:"M d, Y" }}</p>
+          <p class="mb-1"><strong>Time:</strong> {{ appointment.time|time:"h:i A" }}</p>
+          <p class="mb-1"><strong>Status:</strong> {{ appointment.get_status_display }}</p>
+
+          {% if appointment.reason %}
+            <p class="mt-2"><strong>Reason:</strong><br>{{ appointment.reason }}</p>
+          {% endif %}
+
+          <div class="mt-3">
+            {% if appointment.status == 'pending' %}
+              <a href="{% url 'confirm_appointment' appointment.id %}" class="btn btn-sm btn-outline-success">Confirm</a>
+              <a href="{% url 'cancel_appointment_doctor' appointment.id %}" class="btn btn-sm btn-outline-danger">Cancel</a>
+            {% elif appointment.status == 'confirmed' %}
+              <a href="{% url 'complete_appointment' appointment.id %}" class="btn btn-sm btn-outline-primary">Mark Completed</a>
+            {% elif appointment.status == 'completed' %}
+              <span class="badge bg-success">Completed</span>
+            {% elif appointment.status == 'cancelled' %}
+              <span class="badge bg-secondary">Cancelled</span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+    <p>No appointment requests yet.</p>
+  {% endif %}
+
+</div>
+</section>
+{% endblock %}

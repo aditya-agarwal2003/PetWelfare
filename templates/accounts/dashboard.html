@@ -24,9 +24,6 @@
 			<strong class="d-inline-block mr-3">Logged In as: </strong>
 			<span>{{user.full_name}}</span>
 		</header>
-    {% if is_doctor %}
-    <p>appointments will be shown here</p>
-    {% else %}
 		<div class="card-body">
 			<div class="row">
 				<div class="col-md-6">
@@ -110,7 +107,6 @@
         <h5 class="py-2">No Requests</h5>
       {% endif %}
     </div>
-    {% endif %}
 	</main>
 </div> <!-- row.// -->
 </div>

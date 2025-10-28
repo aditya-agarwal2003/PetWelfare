@@ -86,18 +86,17 @@ def dashboard(request):
     # Check if user is a doctor
     if hasattr(user, 'doctor'):
         doctor = user.doctor
-        appointments = doctor.appointment_set.all().order_by('-appointment_date') if hasattr(doctor, 'appointment_set') else []
-        return render(request, 'accounts/dashboard.html', {
-            'is_doctor': True,
+        appointments = doctor.appointments.all().order_by('-created_at') if hasattr(doctor, 'appointments') else []
+        return render(request, 'accounts/doctor_dashboard.html', {
             'doctor': doctor,
             'appointments': appointments,
+            'appointments_count': len(appointments)
         })
 
     # Normal user dashboard
     posts = Post.objects.filter(user=user, is_active=True).order_by('-created_at')
     requests = AdoptionRequest.objects.filter(user=user, is_active=True)
     return render(request, 'accounts/dashboard.html', {
-        'is_doctor': False,
         'posts': posts,
         'requests': requests,
         'posts_count': posts.count(),

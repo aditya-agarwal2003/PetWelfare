@@ -197,7 +197,7 @@ def book_appointment(request, doctor_id):
 @login_required(login_url='login')
 def my_appointments(request):
     """Show all appointments of the logged-in user."""
-    appointments = Appointment.objects.filter(user=request.user).order_by('-date', '-time')
+    appointments = Appointment.objects.filter(user=request.user).order_by('-created_at')
     return render(request, 'pet_adoption/my_appointments.html', {'appointments': appointments})
 
 
@@ -214,3 +214,50 @@ def cancel_appointment(request, appointment_id):
         messages.warning(request, "This appointment cannot be cancelled.")
 
     return redirect('my_appointments')
+
+
+@login_required(login_url='login')
+def cancel_appointment_doctor(request, appointment_id):
+    """Cancel an appointment if it's still pending or confirmed."""
+    appointment = get_object_or_404(Appointment, id=appointment_id, doctor__account=request.user)
+
+    if appointment.status in ['pending', 'confirmed']:
+        appointment.status = 'cancelled'
+        appointment.save()
+        messages.success(request, f"Appointment has been cancelled.")
+    else:
+        messages.warning(request, "This appointment cannot be cancelled.")
+
+    return redirect('dashboard')
+
+
+@login_required
+def confirm_appointment(request, appointment_id):
+    # Ensure the logged-in user is a doctor
+    if not hasattr(request.user, 'doctor'):
+        messages.error(request, "Access denied. Doctors only.")
+        return redirect('dashboard')  # redirect to normal user dashboard
+
+    appointment = get_object_or_404(Appointment, id=appointment_id, doctor=request.user.doctor)
+
+    if appointment.status != 'pending':
+        messages.warning(request, "This appointment has already been processed.")
+        return redirect('dashboard')
+
+    appointment.status = 'confirmed'
+    appointment.save()
+    messages.success(request, f"Appointment #{appointment.id} confirmed successfully!")
+    return redirect('dashboard')
+
+
+@login_required
+def complete_appointment(request, appointment_id):
+    if not hasattr(request.user, 'doctor'):
+        messages.error(request, "Access denied.")
+        return redirect('dashboard')
+
+    appointment = get_object_or_404(Appointment, id=appointment_id, doctor=request.user.doctor)
+    appointment.status = 'completed'
+    appointment.save()
+    messages.success(request, f"Appointment #{appointment.id} marked as completed.")
+    return redirect('dashboard')
