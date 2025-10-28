@@ -33,7 +33,7 @@ SECRET_KEY = os.getenv("SECRET_KEY", 'abc123')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # DEBUG = os.getenv("DEBUG")
-DEBUG = os.getenv('DEBUG',default=False)
+DEBUG = os.getenv('DEBUG',default=True)
 
 ALLOWED_HOSTS = ['*']
 

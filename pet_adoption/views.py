@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from .models import Post, AdoptionRequest, Contact
+from django.db.models import Q
+from .models import Post, AdoptionRequest, Contact, Doctor
 from .constants import HEADER_TAGS, HT_SIZE
 from .forms import PetForm, ContactForm
 import random
@@ -131,3 +132,28 @@ def delete_adopt_request(request, ad_id):
     except Exception:
         messages.error(request, 'Failed Deleting Request!')
     return redirect(reverse('see_details', kwargs={'post_id': post_id}))
+
+
+def find_doctor(request):
+    query = request.GET.get('q', '')
+    pincode = request.GET.get('pincode', '')
+
+    doctors = Doctor.objects.all()
+
+    if query:
+        doctors = doctors.filter(
+            Q(account__first_name__icontains=query) |
+            Q(account__last_name__icontains=query) |
+            Q(specialization__icontains=query) |
+            Q(clinic_name__icontains=query)
+        )
+
+    if pincode:
+        doctors = doctors.filter(pincode__icontains=pincode)
+
+    context = {
+        'doctors': doctors,
+        'query': query,
+        'pincode': pincode,
+    }
+    return render(request, 'pet_adoption/find_doctor.html', context)
