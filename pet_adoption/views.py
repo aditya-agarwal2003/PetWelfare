@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
@@ -186,9 +186,31 @@ def book_appointment(request, doctor_id):
                 created_at=timezone.now()
             )
             messages.success(request, "Appointment booked successfully!")
-            return redirect('dashboard')
+            return redirect('my_appointments')
 
     context = {
         'doctor': doctor,
     }
     return render(request, 'pet_adoption/book_appointment.html', context)
+
+
+@login_required(login_url='login')
+def my_appointments(request):
+    """Show all appointments of the logged-in user."""
+    appointments = Appointment.objects.filter(user=request.user).order_by('-date', '-time')
+    return render(request, 'pet_adoption/my_appointments.html', {'appointments': appointments})
+
+
+@login_required(login_url='login')
+def cancel_appointment(request, appointment_id):
+    """Cancel an appointment if it's still pending or confirmed."""
+    appointment = get_object_or_404(Appointment, id=appointment_id, user=request.user)
+
+    if appointment.status in ['pending', 'confirmed']:
+        appointment.status = 'cancelled'
+        appointment.save()
+        messages.success(request, f"Appointment with Dr. {appointment.doctor.account.first_name} has been cancelled.")
+    else:
+        messages.warning(request, "This appointment cannot be cancelled.")
+
+    return redirect('my_appointments')

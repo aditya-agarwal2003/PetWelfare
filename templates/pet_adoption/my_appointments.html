@@ -1,0 +1,67 @@
+{% extends '_layout.html' %}
+{% block content %}
+<style>
+  @media (max-width: 1074px){
+		.section-content {
+			padding-top: 100px;
+		}
+	}
+</style>
+
+<section class="section-content padding-y bg" style="margin-top: 50px;">
+  <div class="container">
+    {% include 'includes/alerts.html' %}
+    <h3 class="text-center mb-4">My Appointments</h3>
+
+    {% if appointments %}
+      <div class="row">
+        {% for a in appointments %}
+          <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+              <div class="card-body">
+                <h5 class="card-title">Dr. {{ a.doctor.account.first_name }} {{ a.doctor.account.last_name }}</h5>
+                <h6 class="text-muted">{{ a.doctor.specialization }}</h6>
+                {% if a.doctor.clinic_name %}
+                  <p class="mb-1"><strong>Clinic:</strong> {{ a.doctor.clinic_name }}</p>
+                {% endif %}
+                <p class="mb-1"><strong>Pet:</strong> {{ a.pet_name }}</p>
+                <p class="mb-1"><strong>Reason:</strong> {{ a.reason|truncatewords:10 }}</p>
+                <p class="mb-1"><strong>Date:</strong> {{ a.date }}</p>
+                <p class="mb-1"><strong>Time:</strong> {{ a.time }}</p>
+                <p class="mb-2">
+                  <strong>Status:</strong>
+                  {% if a.status == 'pending' %}
+                    <span class="badge bg-warning text-dark">Pending</span>
+                  {% elif a.status == 'confirmed' %}
+                    <span class="badge bg-success">Confirmed</span>
+                  {% elif a.status == 'completed' %}
+                    <span class="badge bg-info text-dark">Completed</span>
+                  {% else %}
+                    <span class="badge bg-danger">Cancelled</span>
+                  {% endif %}
+                </p>
+
+                <div class="d-flex justify-content-between mt-3">
+                  {% if a.status == 'pending' or a.status == 'confirmed' %}
+                    <a href="{% url 'cancel_appointment' a.id %}" 
+                       class="btn btn-outline-danger btn-sm"
+                       onclick="return confirm('Cancel this appointment?');">
+                      Cancel
+                    </a>
+                  {% else %}
+                    <button class="btn btn-secondary btn-sm" disabled>Not Allowed</button>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="alert alert-info text-center mt-4">
+        You haven’t booked any appointments yet.
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
