@@ -92,4 +92,4 @@ class Appointment(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return f"{self.pet_name} - {self.user.first_name} with Dr. {self.doctor.user.first_name} on {self.date}"
+        return f"{self.pet_name} - {self.user.first_name} with Dr. {self.doctor.account.first_name} on {self.date}"

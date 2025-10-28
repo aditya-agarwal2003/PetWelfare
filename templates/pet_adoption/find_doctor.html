@@ -27,7 +27,7 @@
               <p><strong>Clinic:</strong> {{ doctor.clinic_name|default:"N/A" }}</p>
               <p><strong>Pincode:</strong> {{ doctor.pincode }}</p>
               <p><strong>Consultation Fee:</strong> ₹{{ doctor.consultation_fee }}</p>
-              <a href="" class="btn btn-outline-primary btn-sm w-100">Book Appointment</a>
+              <a href="{% url 'book_appointment' doctor.id %}" class="btn btn-outline-primary btn-sm w-100">Book Appointment</a>
             </div>
           </div>
         </div>

@@ -2,11 +2,12 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from .models import Post, AdoptionRequest, Contact, Doctor
+from .models import Post, AdoptionRequest, Contact, Doctor, Appointment
 from .constants import HEADER_TAGS, HT_SIZE
 from .forms import PetForm, ContactForm
 import random
 from django.contrib import messages
+from django.utils import timezone
 
 
 # Create your views here.
@@ -134,6 +135,7 @@ def delete_adopt_request(request, ad_id):
     return redirect(reverse('see_details', kwargs={'post_id': post_id}))
 
 
+@login_required(login_url='login')
 def find_doctor(request):
     query = request.GET.get('q', '')
     pincode = request.GET.get('pincode', '')
@@ -157,3 +159,36 @@ def find_doctor(request):
         'pincode': pincode,
     }
     return render(request, 'pet_adoption/find_doctor.html', context)
+
+
+@login_required(login_url='login')
+def book_appointment(request, doctor_id):
+    doctor = Doctor.objects.get(pk=doctor_id)
+
+    if request.method == 'POST':
+        pet_name = request.POST.get('pet_name')
+        reason = request.POST.get('reason')
+        date = request.POST.get('date')
+        time = request.POST.get('time')
+
+        # Basic validation
+        if not (pet_name and reason and date and time):
+            messages.error(request, "All fields are required.")
+        else:
+            Appointment.objects.create(
+                user=request.user,
+                doctor=doctor,
+                pet_name=pet_name,
+                reason=reason,
+                date=date,
+                time=time,
+                status='pending',
+                created_at=timezone.now()
+            )
+            messages.success(request, "Appointment booked successfully!")
+            return redirect('dashboard')
+
+    context = {
+        'doctor': doctor,
+    }
+    return render(request, 'pet_adoption/book_appointment.html', context)
