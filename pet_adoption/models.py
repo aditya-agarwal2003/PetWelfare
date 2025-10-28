@@ -1,4 +1,6 @@
 from django.db import models
+from django.conf import settings
+from django.utils import timezone
 from accounts.models import Account
 from cloudinary.models import CloudinaryField
 
@@ -66,3 +68,28 @@ class Doctor(models.Model):
 
     def __str__(self):
         return f"Dr. {self.account.first_name} {self.account.last_name}"
+
+
+class Appointment(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('confirmed', 'Confirmed'),
+        ('completed', 'Completed'),
+        ('cancelled', 'Cancelled'),
+    ]
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='appointments'
+    )
+    doctor = models.ForeignKey(
+        'Doctor', on_delete=models.CASCADE, related_name='appointments'
+    )
+    pet_name = models.CharField(max_length=100)
+    reason = models.TextField()
+    date = models.DateField()
+    time = models.TimeField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"{self.pet_name} - {self.user.first_name} with Dr. {self.doctor.user.first_name} on {self.date}"
