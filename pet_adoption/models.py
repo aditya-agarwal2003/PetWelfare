@@ -93,3 +93,28 @@ class Appointment(models.Model):
 
     def __str__(self):
         return f"{self.pet_name} - {self.user.first_name} with Dr. {self.doctor.account.first_name} on {self.date}"
+
+
+class Prescription(models.Model):
+    appointment = models.OneToOneField(
+        Appointment, on_delete=models.CASCADE, related_name='prescription'
+    )
+    diagnosis = models.CharField(max_length=255, help_text="Summary of the diagnosis")
+    symptoms = models.TextField(blank=True, help_text="List or description of symptoms")
+    medicines = models.TextField(
+        help_text="Enter medicines with dosage and frequency. E.g., Paracetamol 500mg - 1 tab twice a day after meals"
+    )
+    instructions = models.TextField(blank=True, help_text="Additional advice or follow-up instructions")
+    next_visit_date = models.DateField(blank=True, null=True, help_text="Suggested next visit date (if any)")
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"Prescription for {self.appointment.pet_name} ({self.appointment.date})"
+
+    @property
+    def doctor(self):
+        return self.appointment.doctor
+
+    @property
+    def user(self):
+        return self.appointment.user
