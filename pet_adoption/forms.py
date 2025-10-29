@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post, Contact
+from .models import Post, Contact, Prescription
 
 class PetForm(forms.ModelForm):
     image = forms.ImageField(required=False, error_messages = {'invalid':("Image files only")}, widget=forms.FileInput)
@@ -29,3 +29,16 @@ class ContactForm(forms.ModelForm):
         super(ContactForm, self).__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'form-control'
+
+
+class PrescriptionForm(forms.ModelForm):
+    class Meta:
+        model = Prescription
+        fields = ['diagnosis', 'symptoms', 'medicines', 'instructions', 'next_visit_date']
+        widgets = {
+            'diagnosis': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Diagnosis'}),
+            'symptoms': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Enter symptoms...'}),
+            'medicines': forms.Textarea(attrs={'class': 'form-control', 'rows': 4, 'placeholder': 'List medicines, dosage, and frequency...'}),
+            'instructions': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Additional care instructions...'}),
+            'next_visit_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        }

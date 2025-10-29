@@ -2,9 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from .models import Post, AdoptionRequest, Contact, Doctor, Appointment
+from .models import Post, AdoptionRequest, Contact, Doctor, Appointment, Prescription
 from .constants import HEADER_TAGS, HT_SIZE
-from .forms import PetForm, ContactForm
+from .forms import PetForm, ContactForm, PrescriptionForm
 import random
 from django.contrib import messages
 from django.utils import timezone
@@ -261,3 +261,36 @@ def complete_appointment(request, appointment_id):
     appointment.save()
     messages.success(request, f"Appointment #{appointment.id} marked as completed.")
     return redirect('dashboard')
+
+
+@login_required
+def add_prescription(request, appointment_id):
+    # Ensure only doctors can access this page
+    if not hasattr(request.user, 'doctor'):
+        messages.error(request, "Only doctors can add prescriptions.")
+        return redirect('dashboard')
+
+    appointment = get_object_or_404(Appointment, id=appointment_id, doctor=request.user.doctor)
+
+    # Allow prescriptions only for confirmed appointments
+    if appointment.status != 'confirmed':
+        messages.warning(request, "Prescription can only be added for confirmed appointments.")
+        return redirect('dashboard')
+
+    # Create or fetch an existing prescription for this appointment
+    prescription, created = Prescription.objects.get_or_create(appointment=appointment)
+
+    if request.method == 'POST':
+        form = PrescriptionForm(request.POST, instance=prescription)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Prescription saved successfully!")
+            return redirect('dashboard')
+    else:
+        form = PrescriptionForm(instance=prescription)
+
+    context = {
+        'form': form,
+        'appointment': appointment,
+    }
+    return render(request, 'pet_adoption/add_prescription.html', context)

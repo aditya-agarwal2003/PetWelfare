@@ -48,6 +48,15 @@
               <a href="{% url 'cancel_appointment_doctor' appointment.id %}" class="btn btn-sm btn-outline-danger">Cancel</a>
             {% elif appointment.status == 'confirmed' %}
               <a href="{% url 'complete_appointment' appointment.id %}" class="btn btn-sm btn-outline-primary">Mark Completed</a>
+                {% if appointment.prescription %}
+                    <a href="{% url 'add_prescription' appointment.id %}" class="btn btn-sm btn-outline-primary">
+                    View / Edit Prescription
+                    </a>
+                {% else %}
+                    <a href="{% url 'add_prescription' appointment.id %}" class="btn btn-sm btn-primary">
+                    Add Prescription
+                    </a>
+                {% endif %}
             {% elif appointment.status == 'completed' %}
               <span class="badge bg-success">Completed</span>
             {% elif appointment.status == 'cancelled' %}

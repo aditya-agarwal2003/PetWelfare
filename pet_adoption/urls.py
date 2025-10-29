@@ -13,6 +13,7 @@ urlpatterns = [
     path('cancel-appointment-doctor/<int:appointment_id>/', views.cancel_appointment_doctor, name='cancel_appointment_doctor'),
     path('confirm_appointment/<int:appointment_id>/', views.confirm_appointment, name='confirm_appointment'),
     path('complete_appointment/<int:appointment_id>/', views.complete_appointment, name='complete_appointment'),
+    path('appointment/<int:appointment_id>/prescription/', views.add_prescription, name='add_prescription'),
     re_path(r'see_details/(?P<post_id>\d+)/$', views.see_details, name = 'see_details'),
     re_path(r'delete_post/(?P<post_id>\d+)/$', views.delete_post, name = 'delete_post'),
     re_path(r'make_adopt_request/(?P<post_id>\d+)/$', views.make_adopt_request, name = 'make_adopt_request'),
