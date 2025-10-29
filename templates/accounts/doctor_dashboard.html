@@ -59,6 +59,11 @@
                 {% endif %}
             {% elif appointment.status == 'completed' %}
               <span class="badge bg-success">Completed</span>
+                {% if appointment.prescription %}
+                <a href="{% url 'view_prescription' appointment.id %}" class="btn btn-sm btn-outline-success" target="_blank">
+                    View Prescription
+                </a>
+                {% endif %}
             {% elif appointment.status == 'cancelled' %}
               <span class="badge bg-secondary">Cancelled</span>
             {% endif %}

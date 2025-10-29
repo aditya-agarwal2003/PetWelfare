@@ -49,7 +49,11 @@
                       Cancel
                     </a>
                   {% else %}
-                    <button class="btn btn-secondary btn-sm" disabled>Not Allowed</button>
+                    {% if a.prescription %}
+                        <a href="{% url 'view_prescription' a.id %}" class="btn btn-sm btn-outline-success" target="_blank">
+                            View Prescription
+                        </a>
+                    {% endif %}
                   {% endif %}
                 </div>
               </div>

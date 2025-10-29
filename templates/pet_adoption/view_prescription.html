@@ -1,0 +1,67 @@
+{% extends "_layout.html" %}
+{% block content %}
+<div class="container mt-5 mb-5">
+  <div class="card shadow p-4" id="prescription-content">
+    <div class="text-center mb-4">
+      <h3 class="text-danger">PetWelfare Prescription</h3>
+      <p><strong>Prescription Date:</strong> {{ prescription.created_at|date:"d M Y" }}</p>
+    </div>
+    
+    <hr>
+
+    <h5><strong>Doctor:</strong> Dr. {{ prescription.appointment.doctor.account.first_name }} {{ prescription.appointment.doctor.account.last_name }}</h5>
+    <br>
+    <p><strong>Pet Owner:</strong> {{ prescription.appointment.user.get_full_name|default:prescription.appointment.user.username }}</p>
+    <p><strong>Pet Name:</strong> {{ prescription.appointment.pet_name }}</p>
+    <p><strong>Appointment Date:</strong> {{ prescription.appointment.date }} | <strong>Time:</strong> {{ prescription.appointment.time }}</p>
+
+    <hr>
+
+    <h5 class="mt-3">Diagnosis</h5>
+    <p>{{ prescription.diagnosis|linebreaks }}</p>
+
+    {% if prescription.symptoms %}
+      <h5 class="mt-3">Symptoms</h5>
+      <p>{{ prescription.symptoms|linebreaks }}</p>
+    {% endif %}
+
+    {% if prescription.medicines %}
+      <h5 class="mt-3">Medicines</h5>
+      <pre style="white-space: pre-wrap;">{{ prescription.medicines }}</pre>
+    {% endif %}
+
+    {% if prescription.instructions %}
+      <h5 class="mt-3">Instructions</h5>
+      <p>{{ prescription.instructions|linebreaks }}</p>
+    {% endif %}
+
+    {% if prescription.next_visit_date %}
+      <h5 class="mt-3">Next Visit Date</h5>
+      <p>{{ prescription.next_visit_date|date:"d M Y" }}</p>
+    {% endif %}
+
+    <hr>
+    <div class="text-end mt-3">
+      <p><strong>Signed by:</strong> Dr. {{ prescription.appointment.doctor.account.first_name }} {{ prescription.appointment.doctor.account.last_name }}</p>
+    </div>
+  </div>
+
+  <!-- Print Button -->
+  <div class="mt-4 text-center d-print-none">
+    <button onclick="printPrescription()" class="btn btn-outline-primary">
+      Print Prescription
+    </button>
+  </div>
+</div>
+
+<!-- Print Script -->
+<script>
+  function printPrescription() {
+    const printContents = document.getElementById("prescription-content").innerHTML;
+    const originalContents = document.body.innerHTML;
+    document.body.innerHTML = printContents;
+    window.print();
+    document.body.innerHTML = originalContents;
+  }
+</script>
+{% endblock %}

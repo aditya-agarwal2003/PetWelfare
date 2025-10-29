@@ -8,6 +8,7 @@ from .forms import PetForm, ContactForm, PrescriptionForm
 import random
 from django.contrib import messages
 from django.utils import timezone
+from django.http import Http404
 
 
 # Create your views here.
@@ -294,3 +295,27 @@ def add_prescription(request, appointment_id):
         'appointment': appointment,
     }
     return render(request, 'pet_adoption/add_prescription.html', context)
+
+
+@login_required
+def view_prescription(request, appointment_id):
+    appointment = get_object_or_404(Appointment, id=appointment_id)
+
+    # Ensure that only the doctor or the patient can view this prescription
+    if request.user != appointment.user and (
+        not hasattr(request.user, 'doctor') or request.user.doctor != appointment.doctor
+    ):
+        raise Http404("You are not authorized to view this prescription.")
+
+    # Make sure the appointment actually has a prescription
+    if not hasattr(appointment, 'prescription'):
+        messages.warning(request, "No prescription found for this appointment.")
+        return redirect('dashboard')
+
+    prescription = appointment.prescription
+
+    context = {
+        'appointment': appointment,
+        'prescription': prescription,
+    }
+    return render(request, 'pet_adoption/view_prescription.html', context)
